@@ -1,0 +1,61 @@
+datasets:
+  - "ml_20m"
+
+val_schemes:
+  - "time_split"
+
+models:
+
+  - report_file_name: negatives
+    cls: SASRecModel
+    comment: _MixedNegatives_
+    fixed_parameters:
+      verbose: 1
+      deterministic: True
+      get_val_mask_func: src.models.transformers.trainer.get_val_mask_func_val_users_2048
+      get_trainer_func: src.models.transformers.trainer.get_trainer_val_loss
+      transformer_layers_type: src.models.transformers.transformer_layers.ligr.LiGRLayers
+      use_key_padding_mask: True
+      dropout_rate: 0.2
+      session_max_len: 200
+      n_factors: 256
+      n_blocks: 4
+      n_heads: 8
+      loss: sampled_softmax
+      n_negatives: 256
+      negative_sampler_type: src.models.transformers.negative_sampler.mixed.MixedSampler
+    search_parameters:
+      - name: "lightning_module_type"
+        choices:
+          - src.models.transformers.negative_sampler.mixed.LogQLightningModule
+          - rectools.models.nn.transformers.lightning.TransformerLightningModule
+      - name: negative_sampler_kwargs.ratio
+        choices:
+          - 0.2
+          - 0.4
+          - 0.6
+          - 0.8
+
+  - report_file_name: negatives
+    cls: SASRecModel
+    comment: _InBatch_
+    fixed_parameters:
+      verbose: 1
+      deterministic: True
+      get_val_mask_func: src.models.transformers.trainer.get_val_mask_func_val_users_2048
+      get_trainer_func: src.models.transformers.trainer.get_trainer_val_loss
+      transformer_layers_type: src.models.transformers.transformer_layers.ligr.LiGRLayers
+      use_key_padding_mask: True
+      dropout_rate: 0.1
+      session_max_len: 200
+      n_factors: 256
+      n_blocks: 2
+      n_heads: 2
+      loss: sampled_softmax
+      n_negatives: 256
+      negative_sampler_type: src.models.transformers.negative_sampler.mixed.InBatchSampler
+    search_parameters:
+      - name: "lightning_module_type"
+        choices:
+          - src.models.transformers.negative_sampler.mixed.LogQLightningModule
+          - rectools.models.nn.transformers.lightning.TransformerLightningModule

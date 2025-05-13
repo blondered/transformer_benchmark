@@ -1,0 +1,31 @@
+datasets:
+  - "kion_r"
+
+val_schemes:
+  - "time_split"
+
+models:
+
+  - report_file_name: baselines
+    cls: PopularModel
+    comment: _
+    fixed_parameters:
+      period.days: 7
+    search_parameters:
+
+  - report_file_name: baselines
+    cls: SASRecModel
+    comment: _vanilla_
+    fixed_parameters:
+      verbose: 1
+      deterministic: True
+      get_val_mask_func: src.models.transformers.trainer.get_val_mask_func_val_users_2048
+      get_trainer_func: src.models.transformers.trainer.get_trainer_val_loss
+      session_max_len: 50
+      loss: BCE
+      n_negatives: 1
+      dropout_rate: 0.1
+      n_factors: 256
+      n_blocks: 2
+      n_heads: 2
+    search_parameters:

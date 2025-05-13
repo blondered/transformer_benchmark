@@ -1,0 +1,29 @@
+datasets:
+  - "kion_r"
+
+val_schemes:
+  - "time_split"
+
+models:
+
+  - report_file_name: mixing
+    cls: SASRecModel
+    comment: _DenseAA-30-days+LiGR+gBCE-0.75_
+    fixed_parameters:
+      verbose: 1
+      deterministic: True
+      get_val_mask_func: src.models.transformers.trainer.get_val_mask_func_val_users_2048
+      get_trainer_func: src.models.transformers.trainer.get_trainer_val_loss
+      data_preparator_type: src.models.transformers.objective.dense_all_action.DenseAllActionDataPreparator
+      transformer_layers_type: src.models.transformers.transformer_layers.ligr.LiGRLayers
+      use_key_padding_mask: True
+      dropout_rate: 0.1
+      session_max_len: 50
+      n_factors: 256
+      n_blocks: 2
+      n_heads: 2
+      loss: gBCE
+      gbce_t: 0.75
+      n_negatives: 256
+      data_preparator_kwargs.targets_window_days: 30
+    search_parameters:

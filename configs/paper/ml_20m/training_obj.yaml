@@ -1,0 +1,94 @@
+datasets:
+  - "ml_20m"
+
+val_schemes:
+  - "time_split"
+
+models:
+
+  - report_file_name: negatives-DenseAA-30-days+LiGR+SS-valid_101
+    cls: SASRecModel
+    comment: _DenseAA-30-days+LiGR+SS_
+    fixed_parameters:
+      verbose: 1
+      deterministic: True
+      get_val_mask_func: src.models.transformers.trainer.get_val_mask_func_val_users_2048
+      get_trainer_func: src.models.transformers.trainer.get_trainer_val_loss
+      data_preparator_type: src.models.transformers.objective.dense_all_action.DenseAllActionDataPreparator
+      transformer_layers_type: src.models.transformers.transformer_layers.ligr.LiGRLayers
+      use_key_padding_mask: True
+      dropout_rate: 0.2
+      session_max_len: 200
+      n_factors: 256
+      n_blocks: 4
+      n_heads: 8
+      loss: sampled_softmax
+      n_negatives: 256
+      data_preparator_kwargs.targets_window_days: 30
+    search_parameters:
+
+  - report_file_name: negatives-AllAction-60-days-Causal+LiGR+SS-valid_101
+    cls: SASRecModel
+    comment: _AllAction-60-days-Causal+LiGR+SS_
+    fixed_parameters:
+      verbose: 1
+      deterministic: True
+      get_val_mask_func: src.models.transformers.trainer.get_val_mask_func_val_users_2048
+      get_trainer_func: src.models.transformers.trainer.get_trainer_val_loss
+      data_preparator_type: src.models.transformers.objective.all_action.AllActionDataPreparator
+      backbone_type: src.models.transformers.objective.all_action.AllActionTransformerTorchBackbone
+      lightning_module_type: src.models.transformers.objective.all_action.AllActionLightningModule
+      transformer_layers_type: src.models.transformers.transformer_layers.ligr.LiGRLayers
+      use_key_padding_mask: True
+      use_causal_attn: True
+      dropout_rate: 0.2
+      session_max_len: 200
+      n_factors: 256
+      n_blocks: 4
+      n_heads: 8
+      loss: sampled_softmax
+      n_negatives: 256
+      data_preparator_kwargs.last_k_days: 60
+    search_parameters:
+
+  - report_file_name: negatives-NextAction-causal+LiGR+SS-valid_101
+    cls: SASRecModel
+    comment: _NextAction-causal+LiGR+SS_
+    fixed_parameters:
+      verbose: 1
+      deterministic: True
+      get_val_mask_func: src.models.transformers.trainer.get_val_mask_func_val_users_2048
+      get_trainer_func: src.models.transformers.trainer.get_trainer_val_loss
+      data_preparator_type: src.models.transformers.objective.next_action.NextActionDataPreparator
+      lightning_module_type: src.models.transformers.objective.next_action.NextActionLightningModule
+      transformer_layers_type: src.models.transformers.transformer_layers.ligr.LiGRLayers
+      use_key_padding_mask: True
+      use_causal_attn: True
+      dropout_rate: 0.2
+      session_max_len: 200
+      n_factors: 256
+      n_blocks: 4
+      n_heads: 8
+      loss: sampled_softmax
+      n_negatives: 256
+    search_parameters:
+
+  - report_file_name: negatives-BERT4Rec+LiGR+SS-valid_101
+    cls: BERT4RecModel
+    comment: _BERT4Rec+LiGR+SS_
+    fixed_parameters:
+      verbose: 1
+      deterministic: True
+      get_val_mask_func: src.models.transformers.trainer.get_val_mask_func_val_users_2048
+      get_trainer_func: src.models.transformers.trainer.get_trainer_val_loss
+      transformer_layers_type: src.models.transformers.transformer_layers.ligr.LiGRLayers
+      use_key_padding_mask: True
+      use_causal_attn: False
+      dropout_rate: 0.2
+      session_max_len: 200
+      n_factors: 256
+      n_blocks: 4
+      n_heads: 8
+      loss: sampled_softmax
+      n_negatives: 256
+    search_parameters:

@@ -1,0 +1,2 @@
+n_users,n_items,n_interactions,avg_length,sparsity,min_date,max_date,leave_one_out_n_train_interactions,leave_one_out_n_holdout_interactions,leave_one_out_holdout_ratio,loo_correction_leave_one_out
+22363,12101,198502,8.876358270357287,0.9992664772935824,1,204,176139,22311,0.1124263038548752,0.9976747305817645

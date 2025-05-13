@@ -1,0 +1,7 @@
+cv_reports:
+- holdout_report_file_name: als  # holdout report file name
+  val_scheme: time_split
+  dataset_name: ml_20m
+  cv_report_path: als.csv  # which grid search report to take
+  cls: ImplicitALSWrapperModel  # which model class to use from grid search report
+  goal_metric: recall@10  # which metric to maximize from grid search

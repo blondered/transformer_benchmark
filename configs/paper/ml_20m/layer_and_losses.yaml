@@ -1,0 +1,65 @@
+datasets:
+  - "ml_20m"
+
+val_schemes:
+  - "time_split"
+
+models:
+
+  - report_file_name: layer_and_losses
+    cls: SASRecModel
+    comment: _SASRec+SS_
+    fixed_parameters:
+      verbose: 1
+      deterministic: True
+      get_val_mask_func: src.models.transformers.trainer.get_val_mask_func_val_users_2048
+      get_trainer_func: src.models.transformers.trainer.get_trainer_val_loss
+      transformer_layers_type: rectools.models.nn.transformers.sasrec.SasRecTransformerLayers
+      use_key_padding_mask: False
+      dropout_rate: 0.2
+      session_max_len: 200
+      n_factors: 256
+      n_blocks: 4
+      n_heads: 8
+      loss: sampled_softmax
+      n_negatives: 256
+    search_parameters:
+
+  - report_file_name: layer_and_losses
+    cls: SASRecModel
+    comment: _LiGRLayers+SS_
+    fixed_parameters:
+      verbose: 1
+      deterministic: True
+      get_val_mask_func: src.models.transformers.trainer.get_val_mask_func_val_users_2048
+      get_trainer_func: src.models.transformers.trainer.get_trainer_val_loss
+      transformer_layers_type: src.models.transformers.transformer_layers.ligr.LiGRLayers
+      use_key_padding_mask: True
+      dropout_rate: 0.2
+      session_max_len: 200
+      n_factors: 256
+      n_blocks: 4
+      n_heads: 8
+      loss: sampled_softmax
+      n_negatives: 256
+    search_parameters:
+
+  - report_file_name: layer_and_losses
+    cls: SASRecModel
+    comment: _gBCE_
+    fixed_parameters:
+      verbose: 1
+      deterministic: True
+      get_val_mask_func: src.models.transformers.trainer.get_val_mask_func_val_users_2048
+      get_trainer_func: src.models.transformers.trainer.get_trainer_val_loss
+      transformer_layers_type: src.models.transformers.transformer_layers.ligr.LiGRLayers
+      use_key_padding_mask: True
+      dropout_rate: 0.2
+      session_max_len: 200
+      n_factors: 256
+      n_blocks: 4
+      n_heads: 8
+      loss: gBCE
+      gbce_t: 0.75
+      n_negatives: 256
+    search_parameters:
