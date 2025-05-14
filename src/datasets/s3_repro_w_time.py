@@ -40,7 +40,7 @@ ITEM_CORE = 5
 
 def process_raw_file(raw_data_path: Path, variant: str) -> pd.DataFrame:
     """Process Amazon raw ratings file for a given variant."""
-    ratings_file = raw_data_path / EXTRACTED_DIRNAME / DATASET_VARIANTS[variant]
+    ratings_file = raw_data_path / DATASET_VARIANTS[variant]
 
     # Read raw file and extract interactions
     interactions = []
