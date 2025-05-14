@@ -1,0 +1,39 @@
+datasets:
+  - "s3_beauty"
+  - "s3_toys"
+  - "s3_sports"
+
+val_schemes:
+  - "leave_one_out"
+
+models:
+  - report_file_name: s3_loo
+    cls: SASRecModel
+    comment: _
+    fixed_parameters:
+      get_trainer_func: src.models.transformers.trainer.get_trainer_200_epochs
+      verbose: 1
+      deterministic: True
+      get_val_mask_func: src.models.transformers.trainer.get_val_mask_func_all
+    search_parameters:
+      - name: "n_factors"
+        choices:
+          - 256
+      - name: "session_max_len"
+        choices:
+          - 50
+      - name: "n_blocks"
+        choices:
+          - 1
+      - name: "n_heads"
+        choices:
+          - 1
+      - name: "dropout_rate"
+        choices:
+          - 0.2
+      - name: "loss"
+        choices:
+          - sampled_softmax
+      - name: "n_negatives"
+        choices:
+          - 256        

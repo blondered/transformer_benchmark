@@ -1,0 +1,142 @@
+datasets:
+  - "ml_20m"
+
+val_schemes:
+  - "leave_one_out"
+
+models:
+  - report_file_name: movielens_loo
+    cls: SASRecModel
+    comment: _
+    fixed_parameters:
+      get_trainer_func: src.models.transformers.trainer.get_trainer
+      verbose: 1
+      deterministic: True
+      get_val_mask_func: src.models.transformers.trainer.get_val_mask_func_all
+    search_parameters:
+      - name: "n_factors"
+        choices:
+          - 256
+      - name: "session_max_len"
+        choices:
+          - 200
+      - name: "n_blocks"
+        choices:
+          - 4
+      - name: "n_heads"
+        choices:
+          - 8
+      - name: "dropout_rate"
+        choices:
+          - 0.2
+      - name: "loss"
+        choices:
+          - sampled_softmax
+      - name: "n_negatives"
+        choices:
+          - 256        
+
+  - report_file_name: movielens_loo
+    cls: SASRecModel
+    comment: _large_
+    fixed_parameters:
+      get_trainer_func: src.models.transformers.trainer.get_trainer
+      verbose: 1
+      deterministic: True
+      get_val_mask_func: src.models.transformers.trainer.get_val_mask_func_all
+    search_parameters:
+      - name: "n_factors"
+        choices:
+          - 256
+      - name: "session_max_len"
+        choices:
+          - 200
+      - name: "n_blocks"
+        choices:
+          - 8
+      - name: "n_heads"
+        choices:
+          - 16
+      - name: "dropout_rate"
+        choices:
+          - 0.2
+      - name: "loss"
+        choices:
+          - sampled_softmax
+      - name: "n_negatives"
+        choices:
+          - 256   
+
+  - report_file_name: movielens_loo
+    cls: SASRecModel
+    comment: _ligr_
+    fixed_parameters:
+      get_trainer_func: src.models.transformers.trainer.get_trainer
+      verbose: 1
+      deterministic: True
+      get_val_mask_func: src.models.transformers.trainer.get_val_mask_func_all
+    search_parameters:
+      - name: "transformer_layers_type"
+        choices:
+          - src.models.transformers.transformer_layers.ligr.LiGRLayers 
+      - name: "use_key_padding_mask"
+        choices:
+          - True
+      - name: "n_factors"
+        choices:
+          - 256
+      - name: "session_max_len"
+        choices:
+          - 200
+      - name: "n_blocks"
+        choices:
+          - 4
+      - name: "n_heads"
+        choices:
+          - 8
+      - name: "dropout_rate"
+        choices:
+          - 0.2
+      - name: "loss"
+        choices:
+          - sampled_softmax
+      - name: "n_negatives"
+        choices:
+          - 256        
+
+  - report_file_name: movielens_loo
+    cls: SASRecModel
+    comment: _large_ligr_
+    fixed_parameters:
+      get_trainer_func: src.models.transformers.trainer.get_trainer
+      verbose: 1
+      deterministic: True
+      get_val_mask_func: src.models.transformers.trainer.get_val_mask_func_all
+    search_parameters:
+      - name: "transformer_layers_type"
+        choices:
+          - src.models.transformers.transformer_layers.ligr.LiGRLayers 
+      - name: "use_key_padding_mask"
+        choices:
+          - True
+      - name: "n_factors"
+        choices:
+          - 256
+      - name: "session_max_len"
+        choices:
+          - 200
+      - name: "n_blocks"
+        choices:
+          - 8
+      - name: "n_heads"
+        choices:
+          - 16
+      - name: "dropout_rate"
+        choices:
+          - 0.2
+      - name: "loss"
+        choices:
+          - sampled_softmax
+      - name: "n_negatives"
+        choices:
+          - 256   

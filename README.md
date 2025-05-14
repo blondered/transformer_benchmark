@@ -104,10 +104,10 @@ reports/
   ```
 
 
-### 5. Configuration files for time-split holdout validation from our paper
-- [Model configurations for time-based validation on multiple datasets](configs/paper/)
+### 5. All configuration files for holdout validation from our paper
+- [Model configurations on multiple datasets and validation schemes](configs/paper/)
 
-Full example to reproduce our results for one dataset (Kion-R):
+Full example to reproduce our results for one dataset (Kion-R) on time-based validation:
 ```
 python src/datasets/kion_r.py
 ```
