@@ -8,7 +8,7 @@ This repository contains code of a benchmarking framework for Transformer-based 
 
 We borrow [RecTools](https://github.com/MobileTeleSystems/RecTools) implementations of backbone models SASRec and BERT4Rec and provide implementations of multiple [modular enhancements for Transformer-based models](src/models/transformers/) on top of them.
 
-Our processed datasets with LOO and time-based splits can be downloaded [online](https://disk.yandex.ru/d/v7yUTbJXYvd0kA).
+Our processed datasets with LOO and time-based splits can be downloaded [online](https://drive.google.com/file/d/18XtnnEjQzPdqXEcI5M8GUAcL81aScgVX/view?usp=sharing).
 
 ### Experimental results on two datasets from our benchmark, and the Pareto-front of top models
 ![pareto](assets/pareto_front.svg)
@@ -56,7 +56,7 @@ We support two validation approaches:
 
 Each dataset during processing is prepared for both validation schemes.
 
-Alternatively, [download](https://disk.yandex.ru/d/v7yUTbJXYvd0kA) processed and splitted datasets, unzip and put datasets into `data/` directory following `data/<dataset_name>` folder structure.
+Alternatively, [download](https://drive.google.com/file/d/18XtnnEjQzPdqXEcI5M8GUAcL81aScgVX/view?usp=sharing) processed and splitted datasets, unzip and put datasets into `data/` directory following `data/<dataset_name>` folder structure.
 
 ### 2. Grid Search on Validation folds:
 To find optimal parameters for each model:
