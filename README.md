@@ -127,7 +127,22 @@ python src/evaluation/holdout_from_params.py --config_file configs/paper/kion_r/
 python src/evaluation/holdout_from_params.py --config_file configs/paper/kion_r/training_obj.yaml
 ```
 
-### 6. Reproduce HSTU and FuXi-𝛼
+### 6. Full hyperparameters tuning grid used on validation fold in our experiments
+
+We tuned hyperparamaters from the following grid:
+- emb_dim (n_factors): [50, 64, 128, 256]
+- n_blocks: [1, 2, 4]
+- n_heads: [1, 2, 4, 8]
+- dropout_rate: [0.1, 0.2, 0.3, 0.5]
+- ff_emb_mult (LiGR only): [1, 2, 4]
+- sequence_max_len: [50, 100, 200]
+- n_negatives: [128, 256]
+
+We used constant learning_rate 0.001 for all datasets.
+We selected max number of epochs (100 or 200) and patience (10 or 50) depeding on dataset size and convergence speed.
+Final hyperparameters set for all datasets is specified in our paper.
+
+### 7. Reproduce HSTU and FuXi-𝛼
 Instructions to reproduce results for HSTU and FuXi-𝛼 models on our data splits are located in a [separate repository](https://anonymous.4open.science/r/hstu_benchmark-4530)
 
 ## Results
