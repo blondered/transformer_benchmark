@@ -1,17 +1,81 @@
-# "SASRec is Still Strong: Realistic Benchmarking of Modular Enhancements for Transformer-based Recommendations"
+# "uSASRec: From Realistic Benchmarking of Modular Enhancements for Transformer-based Recommendations"
 
-This repository contains code of a benchmarking framework for Transformer-based recommender systems. In our paper we challenge recent claims of substantial performance gains over classical architectures by:
+This repository contains model implementations, benchmarking code, link to processed datasets and additional materials for the paper.
 
-- Introducing a modular approach to Transformer-based models, enabling interchangeable use of different layers, training objectives, loss functions, and negative sampling
-- Providing realistic evaluation through time-based splits and beyond-accuracy metrics
-- Demonstrating that enhanced SASRec architecture (SASRec+LiGR+SS) remains highly competitive
+### The Pareto-front of top models from our benchmark
+![pareto](assets/pareto_front.svg)
+Negative sampling results:
+![negatives](assets/neg_bars.svg)
+
+### Backbone models
 
 We borrow [RecTools](https://github.com/MobileTeleSystems/RecTools) implementations of backbone models SASRec and BERT4Rec and provide implementations of multiple [modular enhancements for Transformer-based models](src/models/transformers/) on top of them.
 
-Our processed datasets with LOO and time-based splits can be downloaded [online](https://disk.yandex.ru/d/v7yUTbJXYvd0kA).
+### Processed datasets
 
-### Experimental results on two datasets from our benchmark, and the Pareto-front of top models
-![pareto](assets/pareto_front.svg)
+Our processed datasets with leave-one-out and time-based splits can be downloaded [online](https://disk.yandex.ru/d/v7yUTbJXYvd0kA).
+
+### Code to reproduce HSTU and FuXi-𝛼
+Instructions to reproduce results for HSTU and FuXi-𝛼 models on our data splits are located in a [separate repository](https://anonymous.4open.science/r/hstu_benchmark-4530)
+
+### Common Academic Benchmarks Results
+
+For each user, we hold the final interaction for the test set and the previous interactions for the validation set
+- **Movelens datasets**
+
+| Dataset | Scale | Metric | Reported | | | | Our | | Recalculated | |
+|---------|-------|--------|----------|-|-|-|-----|-|--------------|-|
+| | | | CBiT | SASRec MoL | HSTU | Fuxi-α | SASRec+SS | SASRec+LiGR+SS | HSTU | Fuxi-α |
+| ML-1M | 1-4 layers | R@10 | 0.3013 | 0.3079 | 0.3097 | - | 0.2929 | 0.3133 | 0.3037 | **0.3164** |
+| | | N@10 | 0.1694 | - | 0.172 | - | 0.1684 | 0.1772 | 0.1719 | **0.1813** |
+| ML-20M | 1-4 layers | R@10 | - | 0.3114 | 0.3252 | 0.3353 | 0.3127 | 0.3289 | 0.3431 | **0.3553** |
+| | | N@10 | - | - | 0.1878 | 0.1954 | 0.1829 | 0.1966 | 0.2029 | **0.2118** |
+| ML-20M | 8 layers | R@10 | - | - | **0.3567** | 0.353 | 0.0465 | 0.3457 | ? | ? |
+| | | N@10 | - | - | 0.2106 | 0.2086 | 0.0231 | **0.2107** | ? | ? |
+
+- **Amazon datasets**
+
+| Dataset | Metric | Reported | | | | | | | | Our | |
+|---------|--------|----------|-|-|-|-|-|-|-|-----|-|
+| | | S3Rec | LSAN | DuoRec | CL4SRec | CBiT | TIGER | ELMRec | ActionPiece | SASRec+SS | SASRec+LiGR+SS |
+| Beauty | R@10 | 0.0647 | 0.0785 | 0.0845 | 0.0681 | 0.0905 | 0.0648 | 0.075 | 0.0775 | 0.0921 | **0.0928** |
+| | N@10 | 0.0327 | 0.041 | 0.0443 | 0.0299 | **0.0537** | 0.0384 | 0.0529 | 0.0424 | 0.0531 | 0.0523 |
+| Sports | R@10 | 0.0385 | 0.0481 | 0.0498 | 0.0387 | - | 0.04 | - | 0.05 | **0.0569** | 0.0560 |
+| | N@10 | 0.0204 | 0.0264 | 0.0262 | 0.0171 | - | 0.0225 | - | 0.0264 | 0.0314 | **0.0323** |
+| Toys | R@10 | 0.07 | 0.0711 | - | - | 0.0865 | 0.0712 | - | - | **0.0970** | 0.0939 |
+| | N@10 | 0.0376 | 0.037 | - | - | 0.0535 | 0.0432 | - | - | **0.0580** | 0.0538 |
+
+**Beauty dataset illustrated:**
+![academic](assets/loo.svg)
+
+### Hyperparameters for all datasets
+
+We tuned hyperparamaters from the following grid:
+- emb_dim (n_factors): [50, 64, 128, 256]
+- n_blocks: [1, 2, 4]
+- n_heads: [1, 2, 4, 8]
+- dropout_rate: [0.1, 0.2, 0.3, 0.5]
+- ff_emb_mult (LiGR only): [1, 2, 4]
+- sequence_max_len: [50, 100, 200]
+- n_negatives: [128, 256]
+
+We used constant learning_rate 0.001 for all datasets.
+We selected max number of epochs (100 or 200) and patience (10 or 50) depeding on dataset size and convergence speed.
+
+Selected hyperparamters are equal for both realistic benchmark in our paper and other common academic benchmarks:
+
+| Hyperparameter          | ML-1M | ML-20M | Beauty | Sports | Toys  | Kion  | BeerAdvocate |
+|-------------------------|-------|--------|--------|--------|-------|-------|--------------|
+| emb_dim                 | 64    | 256    | 64     | 64     | 64    | 256   | 256          |
+| n_blocks                | 2     | 4      | 1      | 1      | 1     | 2     | 4            |
+| n_heads                 | 1     | 8      | 1      | 1      | 1     | 2     | 2            |
+| dropout_rate            | 0.1   | 0.2    | 0.2    | 0.2    | 0.2   | 0.1   | 0.3          |
+| ff_emb_mult (LiGR only) | 4     | 4      | 4      | 2      | 1     | 4     | 4            |
+| sequence_max_len        | 200   | 200    | 50     | 50     | 50    | 50    | 100          |
+| n_negatives             | 256   | 256    | 256    | 256    | 256   | 256   | 256          |
+| max_epochs              | 100   | 100    | 200    | 200    | 200   | 100   | 100          |
+| patience                | 50    | 50     | 50     | 50     | 50    | 50    | 10           |
+| learning_rate           | 0.001 | 0.001  | 0.001  | 0.001  | 0.001 | 0.001 | 0.001        |
 
 # Reproduce our results:
 ## Installation
@@ -127,79 +191,11 @@ python src/evaluation/holdout_from_params.py --config_file configs/paper/kion_r/
 python src/evaluation/holdout_from_params.py --config_file configs/paper/kion_r/training_obj.yaml
 ```
 
-### 6. Full hyperparameters tuning grid used on validation fold in our experiments
+# Additional materials
 
-We tuned hyperparamaters from the following grid:
-- emb_dim (n_factors): [50, 64, 128, 256]
-- n_blocks: [1, 2, 4]
-- n_heads: [1, 2, 4, 8]
-- dropout_rate: [0.1, 0.2, 0.3, 0.5]
-- ff_emb_mult (LiGR only): [1, 2, 4]
-- sequence_max_len: [50, 100, 200]
-- n_negatives: [128, 256]
 
-We used constant learning_rate 0.001 for all datasets.
-We selected max number of epochs (100 or 200) and patience (10 or 50) depeding on dataset size and convergence speed.
-Final hyperparameters set for all datasets is specified in our paper.
-
-### 7. Reproduce HSTU and FuXi-𝛼
-Instructions to reproduce results for HSTU and FuXi-𝛼 models on our data splits are located in a [separate repository](https://anonymous.4open.science/r/hstu_benchmark-4530)
-
-## Results
-**Dataset summary statistic**
-| Dataset | Users | Items | Interactions | Avg. Len. | Dataset name in repository | 
-| --- | --- | --- | --- | --- | --- |
-| ML-1M | 6040 | 3706 | 1,000,209 | 165.6 | ml_1m |
-| ML-20M | 138493 | 26744 | 20,000,263 | 144.4 | ml_20m |
-| Beauty | 22363 | 12101 | 198,502 | 8.9 | s3_beaty |
-| Sports | 35598 | 18357 | 296,337 | 8.3 | s3_sports |
-| Toys | 19412 | 11924 | 167,597 | 8.6 | s3_toys |
-| Kion | 606743 | 10266 | 5,109,907 | 8.4 | kion_r |
-| BeerAdvocate | 22679 | 22264 | 1,498,969 | 66.1 | beeradvocate_r |
-
-**Model Hyperparamters**
-| Hyperparameter          | ML-1M | ML-20M | Beauty | Sports | Toys  | Kion  | BeerAdvocate |
-|-------------------------|-------|--------|--------|--------|-------|-------|--------------|
-| emb_dim                 | 64    | 256    | 64     | 64     | 64    | 256   | 256          |
-| n_blocks                | 2     | 4      | 1      | 1      | 1     | 2     | 4            |
-| n_heads                 | 1     | 8      | 1      | 1      | 1     | 2     | 2            |
-| dropout_rate            | 0.1   | 0.2    | 0.2    | 0.2    | 0.2   | 0.1   | 0.3          |
-| ff_emb_mult (LiGR only) | 4     | 4      | 4      | 2      | 1     | 4     | 4            |
-| sequence_max_len        | 200   | 200    | 50     | 50     | 50    | 50    | 100          |
-| n_negatives             | 256   | 256    | 256    | 256    | 256   | 256   | 256          |
-| max_epochs              | 100   | 100    | 200    | 200    | 200   | 100   | 100          |
-| patience                | 50    | 50     | 50     | 50     | 50    | 50    | 10           |
-| learning_rate           | 0.001 | 0.001  | 0.001  | 0.001  | 0.001 | 0.001 | 0.001        |
-
-### Leave-One-Out Validation
-For each user, we hold the final interaction for the test set
-- **Movelens datasets**
-### Performance Comparison
-
-| Dataset | Scale | Metric | Reported | | | | Our | | Recalculated | |
-|---------|-------|--------|----------|-|-|-|-----|-|--------------|-|
-| | | | CBiT | SASRec MoL | HSTU | Fuxi-α | SASRec+SS | SASRec+LiGR+SS | HSTU | Fuxi-α |
-| ML-1M | 1-4 layers | R@10 | 0.3013 | 0.3079 | 0.3097 | - | 0.2929 | 0.3133 | 0.3037 | **0.3164** |
-| | | N@10 | 0.1694 | - | 0.172 | - | 0.1684 | 0.1772 | 0.1719 | **0.1813** |
-| ML-20M | 1-4 layers | R@10 | - | 0.3114 | 0.3252 | 0.3353 | 0.3127 | 0.3289 | 0.3431 | **0.3553** |
-| | | N@10 | - | - | 0.1878 | 0.1954 | 0.1829 | 0.1966 | 0.2029 | **0.2118** |
-| ML-20M | 8 layers | R@10 | - | - | **0.3567** | 0.353 | 0.0465 | 0.3457 | ? | ? |
-| | | N@10 | - | - | 0.2106 | 0.2086 | 0.0231 | **0.2107** | ? | ? |
-
-- **Beaty, Sports and Toys datasets**
-
-| Dataset | Metric | Reported | | | | | | | | Our | |
-|---------|--------|----------|-|-|-|-|-|-|-|-----|-|
-| | | S3Rec | LSAN | DuoRec | CL4SRec | CBiT | TIGER | ELMRec | ActionPiece | SASRec+SS | SASRec+LiGR+SS |
-| Beauty | R@10 | 0.0647 | 0.0785 | 0.0845 | 0.0681 | 0.0905 | 0.0648 | 0.075 | 0.0775 | 0.0921 | **0.0928** |
-| | N@10 | 0.0327 | 0.041 | 0.0443 | 0.0299 | **0.0537** | 0.0384 | 0.0529 | 0.0424 | 0.0531 | 0.0523 |
-| Sports | R@10 | 0.0385 | 0.0481 | 0.0498 | 0.0387 | - | 0.04 | - | 0.05 | **0.0569** | 0.0560 |
-| | N@10 | 0.0204 | 0.0264 | 0.0262 | 0.0171 | - | 0.0225 | - | 0.0264 | 0.0314 | **0.0323** |
-| Toys | R@10 | 0.07 | 0.0711 | - | - | 0.0865 | 0.0712 | - | - | **0.0970** | 0.0939 |
-| | N@10 | 0.0376 | 0.037 | - | - | 0.0535 | 0.0432 | - | - | **0.0580** | 0.0538 |
-
-### Product-like validation
-A time-based validation approach where data is split by global timestamp and the most recent interactions are used for testing.
+### Extended metrics from realistic benchmark
+Here the time-based validation approach is used where data is split by global timestamp and the most recent interactions are used for testing. Both accuracy, and beyond-accuracy metrics are taken into account.
 
 - **ML-20M dataset**
 
@@ -262,6 +258,13 @@ A time-based validation approach where data is split by global timestamp and the
 | | BERT4Rec+LiGR+SS | 0.2777 | 0.0561 | 0.0353 | 0.1102 | 0.0188 |
 | **Mixing** | DenseAA-30-days+LiGR+gBCE-0.75 | 0.2798 | 0.0576 | 0.0283 | 0.1109 | 0.0179 |
 
-- **Mixed negative sampling results for SASRec+LiGR+SS model on Kion and Movielens (ML-20M) datasets**
-
-![](./assets/neg_bars.svg)
+### Dataset summary statistics
+| Dataset | Users | Items | Interactions | Avg. Len. | Dataset name in repository | 
+| --- | --- | --- | --- | --- | --- |
+| ML-1M | 6040 | 3706 | 1,000,209 | 165.6 | ml_1m |
+| ML-20M | 138493 | 26744 | 20,000,263 | 144.4 | ml_20m |
+| Beauty | 22363 | 12101 | 198,502 | 8.9 | s3_beaty |
+| Sports | 35598 | 18357 | 296,337 | 8.3 | s3_sports |
+| Toys | 19412 | 11924 | 167,597 | 8.6 | s3_toys |
+| Kion | 606743 | 10266 | 5,109,907 | 8.4 | kion_r |
+| BeerAdvocate | 22679 | 22264 | 1,498,969 | 66.1 | beeradvocate_r |
