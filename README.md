@@ -4,12 +4,12 @@ This repository contains model implementations, benchmarking code, link to proce
 
 ### The Pareto-front of top models from our benchmark
 ![pareto](assets/pareto_front.svg)
-Negative sampling results:
-![negatives](assets/neg_bars.svg)
 
 ### Backbone models
 
-We borrow [RecTools](https://github.com/MobileTeleSystems/RecTools) implementations of backbone models SASRec and BERT4Rec and provide implementations of multiple [modular enhancements for Transformer-based models](src/models/transformers/) on top of them.
+We borrow [RecTools](https://github.com/MobileTeleSystems/RecTools) implementations of backbone models SASRec and BERT4Rec and provide implementations of multiple [modular enhancements for Transformer-based models](src/models/transformers/) on top of them. 
+
+We also test the quality of selected backbone implementations, provinding reproducibilite test results in the "Additional materials" section of current file.
 
 ### Processed datasets
 
@@ -21,23 +21,26 @@ Instructions to reproduce results for HSTU and FuXi-𝛼 models on our data spli
 ### Common Academic Benchmarks Results
 
 For each user, we hold the final interaction for the test set and the previous interactions for the validation set
-- **Movelens datasets**
+- **Movielens datasets**
 
-| Dataset | Scale | Metric | Reported | | | | Our | | Recalculated | |
-|---------|-------|--------|----------|-|-|-|-----|-|--------------|-|
-| | | | CBiT | SASRec MoL | HSTU | Fuxi-α | SASRec+SS | SASRec+LiGR+SS | HSTU | Fuxi-α |
-| ML-1M | 1-4 layers | R@10 | 0.3013 | 0.3079 | 0.3097 | - | 0.2929 | 0.3133 | 0.3037 | **0.3164** |
-| | | N@10 | 0.1694 | - | 0.172 | - | 0.1684 | 0.1772 | 0.1719 | **0.1813** |
-| ML-20M | 1-4 layers | R@10 | - | 0.3114 | 0.3252 | 0.3353 | 0.3127 | 0.3289 | 0.3431 | **0.3553** |
-| | | N@10 | - | - | 0.1878 | 0.1954 | 0.1829 | 0.1966 | 0.2029 | **0.2118** |
-| ML-20M | 8 layers | R@10 | - | - | **0.3567** | 0.353 | 0.0465 | 0.3457 | ? | ? |
-| | | N@10 | - | - | 0.2106 | 0.2086 | 0.0231 | **0.2107** | ? | ? |
+During our experiments, we found that HSTU and FuXi-𝛼 repositories provided MovieLens datasets processing code, which differed from the typical practice for these datasets because of not preserving the original
+items’ interactions order for a user in case of timestamp collisions. This resulted in a modified order of training sequences and a 25% change in the test set. We used the original code repositories for model training and recalculated their models’ metrics on the identical training and test data to other models in the benchmark.
+
+| Dataset | Scale      | Metric    | Reported   |            |        | Calculated       |                |  |            |
+|---------|------------|-----------|------------|------------|--------|-----------|----------------|--------------|------------|
+|         |            |           | SASRec MoL | HSTU       | Fuxi-α | SASRec+SS | uSASRec | HSTU         | Fuxi-α     |
+| ML-1M   | 1-4 layers | Recall@10 | 0.3079     | 0.3097     | -      | 0.2929    | 0.3133         | 0.3037       | **0.3164** |
+|         |            | NDCG@10   | -          | 0.172      | -      | 0.1684    | 0.1772         | 0.1719       | **0.1813** |
+| ML-20M  | 1-4 layers | Recall@10 | 0.3114     | 0.3252     | 0.3353 | 0.3127    | 0.3289         | 0.3431       | **0.3553** |
+|         |            | NDCG@10   | -          | 0.1878     | 0.1954 | 0.1829    | 0.1966         | 0.2029       | **0.2118** |
+| ML-20M  | 8 layers   | Recall@10 | -          | **0.3567** | 0.353  | 0.0465    | 0.3457         | 0.3464       | 0.3468     |
+|         |            | NDCG@10   | -          | 0.2106     | 0.2086 | 0.0231    | **0.2107**     | 0.2040       | 0.2043     |
 
 - **Amazon datasets**
 
-| Dataset | Metric | Reported | | | | | | | | Our | |
+| Dataset | Metric | Reported | | | | | | | | Calculated | |
 |---------|--------|----------|-|-|-|-|-|-|-|-----|-|
-| | | S3Rec | LSAN | DuoRec | CL4SRec | CBiT | TIGER | ELMRec | ActionPiece | SASRec+SS | SASRec+LiGR+SS |
+| | | S3Rec | LSAN | DuoRec | CL4SRec | CBiT | TIGER | ELMRec | ActionPiece | SASRec+SS | uSASRec |
 | Beauty | R@10 | 0.0647 | 0.0785 | 0.0845 | 0.0681 | 0.0905 | 0.0648 | 0.075 | 0.0775 | 0.0921 | **0.0928** |
 | | N@10 | 0.0327 | 0.041 | 0.0443 | 0.0299 | **0.0537** | 0.0384 | 0.0529 | 0.0424 | 0.0531 | 0.0523 |
 | Sports | R@10 | 0.0385 | 0.0481 | 0.0498 | 0.0387 | - | 0.04 | - | 0.05 | **0.0569** | 0.0560 |
@@ -46,6 +49,7 @@ For each user, we hold the final interaction for the test set and the previous i
 | | N@10 | 0.0376 | 0.037 | - | - | 0.0535 | 0.0432 | - | - | **0.0580** | 0.0538 |
 
 **Beauty dataset illustrated:**
+
 ![academic](assets/loo.svg)
 
 ### Hyperparameters for all datasets
@@ -193,6 +197,21 @@ python src/evaluation/holdout_from_params.py --config_file configs/paper/kion_r/
 
 # Additional materials
 
+### Reproducibility test for SASRec backbone model
+Here we aim to replicate the experimental
+setups described in the original works for multiple SASRec modifications: using the same preprocessed
+datasets, validation schemes, architectures, maximum number of
+epochs, patience and model hyperparameters.
+Following ["A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation"](https://arxiv.org/abs/2207.07483) we consider replication successful if the metric falls within ±5% of the initially reported value.
+
+| Dataset | Model          | Reported | Ours   | Diff (%) |
+|---------|----------------|----------|--------|----------|
+| ML-1M   | SASRec+        | 0.3152   | 0.3144 | -0.25    |
+|         | gSASRec        | 0.3000   | 0.3134 | +4.47    |
+|         | SASRec Softmax | 0.2930   | 0.2867 | -2.15    |
+| ML-20M  | SASRec+        | 0.2983   | 0.3110 | +4.26    |
+|         | SASRec SS      | 0.2862   | 0.2931 | +2.41    |
+
 
 ### Extended metrics from realistic benchmark
 Here the time-based validation approach is used where data is split by global timestamp and the most recent interactions are used for testing. Both accuracy, and beyond-accuracy metrics are taken into account.
@@ -257,6 +276,9 @@ Here the time-based validation approach is used where data is split by global ti
 | | NextAction+LiGR+SS | 0.2288 | 0.0423 | 0.0053 | 0.0570 | 0.0084 |
 | | BERT4Rec+LiGR+SS | 0.2777 | 0.0561 | 0.0353 | 0.1102 | 0.0188 |
 | **Mixing** | DenseAA-30-days+LiGR+gBCE-0.75 | 0.2798 | 0.0576 | 0.0283 | 0.1109 | 0.0179 |
+
+Negative sampling results:
+![negatives](assets/neg_bars.svg)
 
 ### Dataset summary statistics
 | Dataset | Users | Items | Interactions | Avg. Len. | Dataset name in repository | 
