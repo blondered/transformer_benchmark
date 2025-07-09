@@ -38,8 +38,8 @@ items’ interactions order for a user in case of timestamp collisions. This res
 
 - **Amazon datasets**
 
-| Dataset | Metric | Reported | | | | | | | | Calculated | |
-|---------|--------|----------|-|-|-|-|-|-|-|-----|-|
+| Dataset | Metric | Reported | | | | | | | | Calculated | | | |
+|---------|--------|----------|-|-|-|-|-|-|-|-----|-| | |
 | | | SASRec | HSTU | S3Rec | LSAN | DuoRec | CL4SRec | TIGER | ActionPiece | SASRec+SS | uSASRec | HSTU | Fuxi-α |
 | Beauty | R@10 | 0.0605 | 0.0704 | 0.0647 | 0.0785 | 0.0845 | 0.0681 | 0.0648 | 0.0775 | 0.0921 | **0.0928** | 0.0788 | 0.0809 |
 | | N@10 | 0.0318 | 0.0389 | 0.0327 | 0.041 | 0.0443 | 0.0299 | 0.0384 | 0.0424 | **0.0531** | 0.0523 | 0.0439 | 0.0451 |
