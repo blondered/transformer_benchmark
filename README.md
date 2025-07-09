@@ -204,13 +204,13 @@ datasets, validation schemes, architectures, maximum number of
 epochs, patience and model hyperparameters.
 Following ["A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation"](https://arxiv.org/abs/2207.07483) we consider replication successful if the metric falls within ±5% of the initially reported value.
 
-| Dataset | Model          | Reported | Ours   | Diff (%) |
-|---------|----------------|----------|--------|----------|
-| ML-1M   | SASRec+        | 0.3152   | 0.3144 | -0.25    |
-|         | gSASRec        | 0.3000   | 0.3134 | +4.47    |
-|         | SASRec Softmax | 0.2930   | 0.2867 | -2.15    |
-| ML-20M  | SASRec+        | 0.2983   | 0.3110 | +4.26    |
-|         | SASRec SS      | 0.2862   | 0.2931 | +2.41    |
+| Dataset | Model          | Reported | Ours   | Diff (%) | Reference|
+|---------|----------------|----------|--------|----------|----------|
+| ML-1M   | SASRec+        | 0.3152   | 0.3144 | -0.25    |[Link](https://arxiv.org/abs/2309.07602)|
+|         | gSASRec        | 0.3000   | 0.3134 | +4.47    |[Link](https://arxiv.org/abs/2308.07192)|
+|         | SASRec Softmax | 0.2930   | 0.2867 | -2.15    |[Link](https://arxiv.org/abs/2308.07192)|
+| ML-20M  | SASRec+        | 0.2983   | 0.3110 | +4.26    |[Link](https://arxiv.org/abs/2309.07602)|
+|         | SASRec SS      | 0.2862   | 0.2931 | +2.41    |[Link](https://arxiv.org/abs/2306.04039)|
 
 
 ### Extended metrics from realistic benchmark
@@ -221,11 +221,11 @@ Here the time-based validation approach is used where data is split by global ti
 | Modules | Model | HR@10 | N@10 | Coverage@10 | Debiased HR@10 | Debiased N@10 |
 |---------|-------|-------|------|-------------|----------------|---------------|
 | **Baselines** | Popular-7-days | 0.5699 | 0.1671 | 0.0061 | 0.1155 | 0.0184 |
-| | SASRec Vanilla (BCE 1 neg) | 0.4856 | 0.1192 | 0.0829 | 0.2024 | 0.0371 |
+| | SASRec Vanilla, BCE 1 neg | 0.4856 | 0.1192 | 0.0829 | 0.2024 | 0.0371 |
 | **SOTA models** | HSTU | **0.5977** | 0.1872 | 0.0535 | 0.1897 | 0.0316 |
 | | FuXi-α | 0.5895 | **0.1883** | 0.0513 | 0.1788 | 0.0299 |
 | **Layers & Losses** | SASRec+SS | 0.5354 | 0.1527 | 0.0913 | 0.2110 | **0.0394** |
-| | SASRec+LiGR+SS | 0.5313 | 0.1563 | 0.0889 | 0.1978 | 0.0380 |
+| | SASRec+LiGR+SS (uSASRec)| 0.5313 | 0.1563 | 0.0889 | 0.1978 | 0.0380 |
 | | SASRec+LiGR+gBCE-0.75 | 0.5339 | 0.1479 | 0.1049 | **0.2162** | 0.0391 |
 | **Negatives** | SASRec+LiGR+SS+Mixed-0.6 | 0.4753 | 0.1248 | **0.1076** | 0.1828 | 0.0353 |
 | | SASRec+LiGR+SS+Mixed-0.6-LogQ | 0.4871 | 0.1358 | 0.0589 | 0.2059 | 0.0392 |
@@ -241,11 +241,11 @@ Here the time-based validation approach is used where data is split by global ti
 | Modules | Model | HR@10 | N@10 | Coverage@10 | Debiased HR@10 | Debiased N@10 |
 |---------|-------|-------|------|-------------|----------------|---------------|
 | **Baselines** | Popular-7-days | 0.3728 | 0.142 | 0.0035 | 0.0153 | 0.0052 |
-| | SASRec Vanilla (BCE 1 neg) | 0.3559 | 0.1389 | 0.113 | 0.0338 | 0.0106 |
+| | SASRec Vanilla, BCE 1 neg | 0.3559 | 0.1389 | 0.113 | 0.0338 | 0.0106 |
 | **SOTA models** | HSTU | 0.4200 | **0.1694** | 0.2110 | 0.0667 | 0.0218 |
 | | FuXi-α | 0.4144 | 0.1647 | 0.2319 | 0.0678 | 0.0223 |
 | **Layers & Losses** | SASRec+SS | 0.3801 | 0.1497 | 0.0785 | 0.0417 | 0.0136 |
-| | SASRec+LiGR+SS | 0.4157 | 0.1657 | 0.3003 | 0.0825 | 0.0273 |
+| | SASRec+LiGR+SS (uSASRec)| 0.4157 | 0.1657 | 0.3003 | 0.0825 | 0.0273 |
 | | SASRec+LiGR+SS+gBCE-0.75 | **0.4205** | 0.1685 | 0.2381 | 0.0701 | 0.0233 |
 | **Negatives** | SASRec+LiGR+SS+Mixed-0.6 | 0.3726 | 0.1475 | 0.4049 | **0.0918** | **0.0311** |
 | | SASRec+LiGR+SS+Mixed-0.6-LogQ | 0.4042 | 0.1621 | 0.1218 | 0.0358 | 0.0111 |
@@ -261,11 +261,11 @@ Here the time-based validation approach is used where data is split by global ti
 | Modules | Model | HR@10 | N@10 | Coverage@10 | Debiased HR@10 | Debiased N@10 |
 |---------|-------|-------|------|-------------|----------------|---------------|
 | **Baselines** | Popular-7-days | 0.2716 | 0.0575 | 0.0013 | 0.0470 | 0.0063 |
-| | SASRec Vanilla (BCE 1 neg) | 0.1432 | 0.0222 | 0.0078 | 0.0519 | 0.0072 |
+| | SASRec Vanilla, BCE 1 neg | 0.1432 | 0.0222 | 0.0078 | 0.0519 | 0.0072 |
 | **SOTA models** | HSTU | 0.2300 | 0.0473 | **0.1942** | 0.1243 | **0.0238** |
 | | FuXi-α | 0.2367 | 0.0472 | 0.1904 | 0.1202 | 0.0234 |
 | **Layers & Losses** | SASRec+SS | 0.2015 | 0.0381 | 0.0079 | 0.0752 | 0.0121 |
-| | SASRec+LiGR+SS | 0.2974 | 0.0650 | 0.0771 | 0.1236 | 0.0223 |
+| | SASRec+LiGR+SS (uSASRec)| 0.2974 | 0.0650 | 0.0771 | 0.1236 | 0.0223 |
 | | SASRec+LiGR+gBCE-0.75 | 0.3014 | 0.0629 | 0.0737 | **0.1329** | 0.0228 |
 | **Negatives** | SASRec+LiGR+SS+Mixed-0.2 | 0.2786 | 0.0590 | 0.0988 | 0.1294 | 0.0221 |
 | | SASRec+LiGR+SS+Mixed-0.6 | 0.2762 | 0.0606 | 0.0746 | 0.1078 | 0.0183 |
