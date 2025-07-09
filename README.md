@@ -238,7 +238,7 @@ Here the time-based validation approach is used where data is split by global ti
 
 - **Kion dataset**
 
-| Modules | Model | HR@10 | N@10 | Coverage@10 | DHR@10 | DN@10 | Pareto-optimal |
+| Modules | Model | HR@10 | N@10 | C@10 | DHR@10 | DN@10 | Pareto-optimal |
 |---------|-------|-------|------|-------------|----------------|---------------|---------------|
 | **Baselines** | Popular-7-days | 0.3728 | 0.142 | 0.0035 | 0.0153 | 0.0052 | [ ] |
 | | SASRec Vanilla, BCE 1 neg | 0.3559 | 0.1389 | 0.113 | 0.0338 | 0.0106 | [ ] |
@@ -258,9 +258,9 @@ Here the time-based validation approach is used where data is split by global ti
 
 - **BeerAdvocate dataset**
 
-| Modules | Model | HR@10 | N@10 | Coverage@10 | DHR@10 | DN@10 | Pareto-optimal |
+| Modules | Model | HR@10 | N@10 | C@10 | DHR@10 | DN@10 | Pareto-optimal |
 |---------|-------|-------|------|-------------|----------------|---------------|---------------|
-| **Baselines** | Popular-7-days | 0.2716 | 0.0575 | 0.0013 | 0.0470 | 0.0063 | [ ] |
+| **Baselines** | Popular-7-days | 0.2716 | 0.0575 | 0.0013 | 0.0470 | 0.0063 | [x] |
 | | SASRec Vanilla, BCE 1 neg | 0.1432 | 0.0222 | 0.0078 | 0.0519 | 0.0072 | [ ] |
 | **SOTA models** | HSTU | 0.2300 | 0.0473 | **0.1942** | 0.1243 | **0.0238** | [ ] |
 | | FuXi-α | 0.2367 | 0.0472 | 0.1904 | 0.1202 | 0.0234 | [ ] |
