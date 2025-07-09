@@ -147,16 +147,29 @@ Instructions to reproduce results for HSTU and FuXi-𝛼 models on our data spli
 
 ## Results
 **Dataset summary statistic**
-| Dataset | Users | Items | Interactions | Avg. Len. | 
-| --- | --- | --- | --- | --- | 
-| ML-1M-Unf | 6040 | 3706 | 1,000,209 | 165.6 | 
-| ML-1M-Bert | 6040 | 3416 | 999,611 | 165.5 | 
-| ML-20M-Unf | 138493 | 26744 | 20,000,263 | 144.4 | 
-| Beauty-S3 | 22363 | 12101 | 198,502 | 8.9 | 
-| Sports-S3 | 35598 | 18357 | 296,337 | 8.3 | 
-| Toys-S3 | 19412 | 11924 | 167,597 | 8.6 | 
-| Kion-R | 606743 | 10266 | 5,109,907 | 8.4 | 
-| BeerAdvocate-R | 22679 | 22264 | 1,498,969 | 66.1 |
+| Dataset | Users | Items | Interactions | Avg. Len. | Dataset name in repository | 
+| --- | --- | --- | --- | --- | --- |
+| ML-1M | 6040 | 3706 | 1,000,209 | 165.6 | ml_1m |
+| ML-20M | 138493 | 26744 | 20,000,263 | 144.4 | ml_20m |
+| Beauty | 22363 | 12101 | 198,502 | 8.9 | s3_beaty |
+| Sports | 35598 | 18357 | 296,337 | 8.3 | s3_sports |
+| Toys | 19412 | 11924 | 167,597 | 8.6 | s3_toys |
+| Kion | 606743 | 10266 | 5,109,907 | 8.4 | kion_r |
+| BeerAdvocate | 22679 | 22264 | 1,498,969 | 66.1 | beeradvocate_r |
+
+**Model Hyperparamters**
+| Hyperparameter          | ML-1M | ML-20M | Beauty | Sports | Toys  | Kion  | BeerAdvocate |
+|-------------------------|-------|--------|--------|--------|-------|-------|--------------|
+| emb_dim                 | 64    | 256    | 64     | 64     | 64    | 256   | 256          |
+| n_blocks                | 2     | 4      | 1      | 1      | 1     | 2     | 4            |
+| n_heads                 | 1     | 8      | 1      | 1      | 1     | 2     | 2            |
+| dropout_rate            | 0.1   | 0.2    | 0.2    | 0.2    | 0.2   | 0.1   | 0.3          |
+| ff_emb_mult (LiGR only) | 4     | 4      | 4      | 2      | 1     | 4     | 4            |
+| sequence_max_len        | 200   | 200    | 50     | 50     | 50    | 50    | 100          |
+| n_negatives             | 256   | 256    | 256    | 256    | 256   | 256   | 256          |
+| max_epochs              | 100   | 100    | 200    | 200    | 200   | 100   | 100          |
+| patience                | 50    | 50     | 50     | 50     | 50    | 50    | 10           |
+| learning_rate           | 0.001 | 0.001  | 0.001  | 0.001  | 0.001 | 0.001 | 0.001        |
 
 ### Leave-One-Out Validation
 For each user, we hold the final interaction for the test set
@@ -166,11 +179,11 @@ For each user, we hold the final interaction for the test set
 | Dataset | Scale | Metric | Reported | | | | Our | | Recalculated | |
 |---------|-------|--------|----------|-|-|-|-----|-|--------------|-|
 | | | | CBiT | SASRec MoL | HSTU | Fuxi-α | SASRec+SS | SASRec+LiGR+SS | HSTU | Fuxi-α |
-| ML-1M-Unf | 1-4 layers | R@10 | 0.3013 | 0.3079 | 0.3097 | - | 0.2929 | 0.3133 | 0.3037 | **0.3164** |
+| ML-1M | 1-4 layers | R@10 | 0.3013 | 0.3079 | 0.3097 | - | 0.2929 | 0.3133 | 0.3037 | **0.3164** |
 | | | N@10 | 0.1694 | - | 0.172 | - | 0.1684 | 0.1772 | 0.1719 | **0.1813** |
-| ML-20M-Unf | 1-4 layers | R@10 | - | 0.3114 | 0.3252 | 0.3353 | 0.3127 | 0.3289 | 0.3431 | **0.3553** |
+| ML-20M | 1-4 layers | R@10 | - | 0.3114 | 0.3252 | 0.3353 | 0.3127 | 0.3289 | 0.3431 | **0.3553** |
 | | | N@10 | - | - | 0.1878 | 0.1954 | 0.1829 | 0.1966 | 0.2029 | **0.2118** |
-| ML-20M-Unf | 8 layers | R@10 | - | - | **0.3567** | 0.353 | 0.0465 | 0.3457 | ? | ? |
+| ML-20M | 8 layers | R@10 | - | - | **0.3567** | 0.353 | 0.0465 | 0.3457 | ? | ? |
 | | | N@10 | - | - | 0.2106 | 0.2086 | 0.0231 | **0.2107** | ? | ? |
 
 - **Beaty, Sports and Toys datasets**
@@ -178,17 +191,17 @@ For each user, we hold the final interaction for the test set
 | Dataset | Metric | Reported | | | | | | | | Our | |
 |---------|--------|----------|-|-|-|-|-|-|-|-----|-|
 | | | S3Rec | LSAN | DuoRec | CL4SRec | CBiT | TIGER | ELMRec | ActionPiece | SASRec+SS | SASRec+LiGR+SS |
-| Beauty-S3 | R@10 | 0.0647 | 0.0785 | 0.0845 | 0.0681 | 0.0905 | 0.0648 | 0.075 | 0.0775 | 0.0921 | **0.0928** |
+| Beauty | R@10 | 0.0647 | 0.0785 | 0.0845 | 0.0681 | 0.0905 | 0.0648 | 0.075 | 0.0775 | 0.0921 | **0.0928** |
 | | N@10 | 0.0327 | 0.041 | 0.0443 | 0.0299 | **0.0537** | 0.0384 | 0.0529 | 0.0424 | 0.0531 | 0.0523 |
-| Sports-S3 | R@10 | 0.0385 | 0.0481 | 0.0498 | 0.0387 | - | 0.04 | - | 0.05 | **0.0569** | 0.0560 |
+| Sports | R@10 | 0.0385 | 0.0481 | 0.0498 | 0.0387 | - | 0.04 | - | 0.05 | **0.0569** | 0.0560 |
 | | N@10 | 0.0204 | 0.0264 | 0.0262 | 0.0171 | - | 0.0225 | - | 0.0264 | 0.0314 | **0.0323** |
-| Toys-S3 | R@10 | 0.07 | 0.0711 | - | - | 0.0865 | 0.0712 | - | - | **0.0970** | 0.0939 |
+| Toys | R@10 | 0.07 | 0.0711 | - | - | 0.0865 | 0.0712 | - | - | **0.0970** | 0.0939 |
 | | N@10 | 0.0376 | 0.037 | - | - | 0.0535 | 0.0432 | - | - | **0.0580** | 0.0538 |
 
 ### Product-like validation
 A time-based validation approach where data is split by global timestamp and the most recent interactions are used for testing.
 
-- **ML-20M-Unf dataset**
+- **ML-20M dataset**
 
 | Modules | Model | HR@10 | N@10 | Coverage@10 | Debiased HR@10 | Debiased N@10 |
 |---------|-------|-------|------|-------------|----------------|---------------|
@@ -208,7 +221,7 @@ A time-based validation approach where data is split by global timestamp and the
 | | BERT4Rec+LiGR+SS | 0.4907 | 0.1364 | 0.0808 | 0.1926 | 0.0351 |
 | **Mixing** | DenseAA-30-days+LiGR+gBCE-0.75 | 0.5813 | 0.1762 | 0.058 | 0.1852 | 0.0327 |
 
-- **Kion-R dataset**
+- **Kion dataset**
 
 | Modules | Model | HR@10 | N@10 | Coverage@10 | Debiased HR@10 | Debiased N@10 |
 |---------|-------|-------|------|-------------|----------------|---------------|
@@ -228,7 +241,7 @@ A time-based validation approach where data is split by global timestamp and the
 | | BERT4Rec+LiGR+SS | 0.3990 | 0.1586 | 0.0930 | 0.0631 | 0.0204 |
 | **Mixing** | DenseAA-7-days+LiGR+gBCE-0.75 | 0.4195 | 0.1689 | 0.1046 | 0.0578 | 0.0181 |
 
-- **BeerAdvocate-R dataset**
+- **BeerAdvocate dataset**
 
 | Modules | Model | HR@10 | N@10 | Coverage@10 | Debiased HR@10 | Debiased N@10 |
 |---------|-------|-------|------|-------------|----------------|---------------|
@@ -248,3 +261,7 @@ A time-based validation approach where data is split by global timestamp and the
 | | NextAction+LiGR+SS | 0.2288 | 0.0423 | 0.0053 | 0.0570 | 0.0084 |
 | | BERT4Rec+LiGR+SS | 0.2777 | 0.0561 | 0.0353 | 0.1102 | 0.0188 |
 | **Mixing** | DenseAA-30-days+LiGR+gBCE-0.75 | 0.2798 | 0.0576 | 0.0283 | 0.1109 | 0.0179 |
+
+- **Mixed negative sampling results for SASRec+LiGR+SS model on Kion and Movielens (ML-20M) datasets**
+
+![](./assets/neg_bars.svg)
