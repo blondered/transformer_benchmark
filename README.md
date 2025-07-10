@@ -1,4 +1,4 @@
-# "uSASRec: From Realistic Benchmarking of Modular Enhancements for Transformer-based Recommendations"
+# "eSASRec: Enhancing Transformer-based Recommendations in a Modular Fashion"
 
 This repository contains model implementations, benchmarking code, link to processed datasets and additional materials for the paper.
 
@@ -28,7 +28,7 @@ items’ interactions order for a user in case of timestamp collisions. This res
 
 | Dataset | Scale      | Metric    | Reported   |            |        | Calculated       |                |  |            |
 |---------|------------|-----------|------------|------------|--------|-----------|----------------|--------------|------------|
-|         |            |           | SASRec MoL | HSTU       | Fuxi-α | SASRec+SS | uSASRec | HSTU         | Fuxi-α     |
+|         |            |           | SASRec MoL | HSTU       | Fuxi-α | SASRec+SS | eSASRec | HSTU         | Fuxi-α     |
 | ML-1M   | 1-4 layers | R@10      | 0.3079     | 0.3097     | -      | 0.2929    | 0.3133         | 0.3037       | **0.3164** |
 |         |            | N@10      | -          | 0.172      | -      | 0.1684    | 0.1772         | 0.1719       | **0.1813** |
 | ML-20M  | 1-4 layers | R@10      | 0.3114     | 0.3252     | 0.3353 | 0.3127    | 0.3289         | 0.3431       | **0.3553** |
@@ -40,7 +40,7 @@ items’ interactions order for a user in case of timestamp collisions. This res
 
 | Dataset | Metric | Reported | | | | | | | | Calculated | | | |
 |---------|--------|----------|-|-|-|-|-|-|-|-----|-|-|-|
-| | | SASRec | HSTU | S3Rec | LSAN | DuoRec | CL4SRec | TIGER | ActionPiece | SASRec+SS | uSASRec | HSTU | Fuxi-α |
+| | | SASRec | HSTU | S3Rec | LSAN | DuoRec | CL4SRec | TIGER | ActionPiece | SASRec+SS | eSASRec | HSTU | Fuxi-α |
 | Beauty | R@10 | 0.0605 | 0.0704 | 0.0647 | 0.0785 | 0.0845 | 0.0681 | 0.0648 | 0.0775 | 0.0921 | **0.0928** | 0.0788 | 0.0809 |
 | | N@10 | 0.0318 | 0.0389 | 0.0327 | 0.041 | 0.0443 | 0.0299 | 0.0384 | 0.0424 | **0.0531** | 0.0523 | 0.0439 | 0.0451 |
 | Sports | R@10 | 0.0350 | 0.0414 | 0.0385 | 0.0481 | 0.0498 | 0.0387 | 0.04 | 0.05 | **0.0569** | 0.0560 | 0.0437 | 0.0437 |
@@ -225,7 +225,7 @@ Here the time-based validation approach is used where data is split by global ti
 | **SOTA models** | HSTU | **0.5977** | 0.1872 | 0.0535 | 0.1897 | 0.0316 |
 | | FuXi-α | 0.5895 | **0.1883** | 0.0513 | 0.1788 | 0.0299 |
 | **Layers & Losses** | SASRec+SS | 0.5354 | 0.1527 | 0.0913 | 0.2110 | **0.0394** |
-| | SASRec+LiGR+SS (uSASRec)| 0.5313 | 0.1563 | 0.0889 | 0.1978 | 0.0380 |
+| | SASRec+LiGR+SS (eSASRec)| 0.5313 | 0.1563 | 0.0889 | 0.1978 | 0.0380 |
 | | SASRec+LiGR+gBCE-0.75 | 0.5339 | 0.1479 | 0.1049 | **0.2162** | 0.0391 |
 | **Negatives** | SASRec+LiGR+SS+Mixed-0.6 | 0.4753 | 0.1248 | **0.1076** | 0.1828 | 0.0353 |
 | | SASRec+LiGR+SS+Mixed-0.6-LogQ | 0.4871 | 0.1358 | 0.0589 | 0.2059 | 0.0392 |
@@ -245,7 +245,7 @@ Here the time-based validation approach is used where data is split by global ti
 | **SOTA models** | HSTU | 0.4200 | **0.1694** | 0.2110 | 0.0667 | 0.0218 |
 | | FuXi-α | 0.4144 | 0.1647 | 0.2319 | 0.0678 | 0.0223 |
 | **Layers & Losses** | SASRec+SS | 0.3801 | 0.1497 | 0.0785 | 0.0417 | 0.0136 |
-| | SASRec+LiGR+SS (uSASRec)| 0.4157 | 0.1657 | 0.3003 | 0.0825 | 0.0273 |
+| | SASRec+LiGR+SS (eSASRec)| 0.4157 | 0.1657 | 0.3003 | 0.0825 | 0.0273 |
 | | SASRec+LiGR+SS+gBCE-0.75 | **0.4205** | 0.1685 | 0.2381 | 0.0701 | 0.0233 |
 | **Negatives** | SASRec+LiGR+SS+Mixed-0.6 | 0.3726 | 0.1475 | 0.4049 | **0.0918** | **0.0311** |
 | | SASRec+LiGR+SS+Mixed-0.6-LogQ | 0.4042 | 0.1621 | 0.1218 | 0.0358 | 0.0111 |
@@ -265,7 +265,7 @@ Here the time-based validation approach is used where data is split by global ti
 | **SOTA models** | HSTU | 0.2300 | 0.0473 | **0.1942** | 0.1243 | **0.0238** |
 | | FuXi-α | 0.2367 | 0.0472 | 0.1904 | 0.1202 | 0.0234 |
 | **Layers & Losses** | SASRec+SS | 0.2015 | 0.0381 | 0.0079 | 0.0752 | 0.0121 |
-| | SASRec+LiGR+SS (uSASRec)| 0.2974 | 0.0650 | 0.0771 | 0.1236 | 0.0223 |
+| | SASRec+LiGR+SS (eSASRec)| 0.2974 | 0.0650 | 0.0771 | 0.1236 | 0.0223 |
 | | SASRec+LiGR+gBCE-0.75 | 0.3014 | 0.0629 | 0.0737 | **0.1329** | 0.0228 |
 | **Negatives** | SASRec+LiGR+SS+Mixed-0.2 | 0.2786 | 0.0590 | 0.0988 | 0.1294 | 0.0221 |
 | | SASRec+LiGR+SS+Mixed-0.6 | 0.2762 | 0.0606 | 0.0746 | 0.1078 | 0.0183 |
