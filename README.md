@@ -2,14 +2,11 @@
 
 This repository contains model implementations, benchmarking code, link to processed datasets and additional materials for the paper.
 
-### The Pareto-front of top models from our benchmark
-![pareto](assets/pareto_front.svg)
-
 ### Backbone models
 
 We borrow [RecTools](https://github.com/MobileTeleSystems/RecTools) implementations of backbone models SASRec and BERT4Rec and provide implementations of multiple [modular enhancements for Transformer-based models](src/models/transformers/) on top of them. 
 
-We also test the quality of selected backbone implementations, provinding reproducibilite test results in the "Additional materials" section of current file.
+We also test the quality of selected backbone implementations, providing reproducibility test results in the "Additional materials" section of current file.
 
 ### Processed datasets
 
@@ -18,9 +15,27 @@ Our processed datasets with leave-one-out and time-based splits can be downloade
 ### Code to reproduce HSTU and FuXi-𝛼
 Instructions to reproduce results for HSTU and FuXi-𝛼 models on our data splits are located in a [separate repository](https://anonymous.4open.science/r/hstu_benchmark-4530)
 
-### Common Academic Benchmarks Results
+# Preliminary study results: Common academic benchmarks
 
 For each user, we hold the final interaction for the test set and the previous interactions for the validation set
+
+**Beauty dataset illustrated:**
+
+![academic](assets/loo.svg)
+
+- **Amazon datasets**
+
+| Dataset | Metric | Reported | | | | | | | | Calculated | | | |
+|---------|--------|----------|-|-|-|-|-|-|-|-----|-|-|-|
+| | | SASRec | HSTU | S3Rec | LSAN | DuoRec | CL4SRec | TIGER | ActionPiece | SASRec+SS | eSASRec | HSTU | Fuxi-α |
+| Beauty | R@10 | 0.0605 | 0.0704 | 0.0647 | 0.0785 | 0.0845 | 0.0681 | 0.0648 | 0.0775 | 0.0921 | **0.0928** | 0.0788 | 0.0809 |
+| | N@10 | 0.0318 | 0.0389 | 0.0327 | 0.041 | 0.0443 | 0.0299 | 0.0384 | 0.0424 | **0.0531** | 0.0523 | 0.0439 | 0.0451 |
+| Sports | R@10 | 0.0350 | 0.0414 | 0.0385 | 0.0481 | 0.0498 | 0.0387 | 0.04 | 0.05 | **0.0569** | 0.0560 | 0.0437 | 0.0437 |
+| | N@10 | 0.0192 | 0.0215 | 0.0204 | 0.0264 | 0.0262 | 0.0171 | 0.0225 | 0.0264 | 0.0314 | **0.0323** | 0.0243 | 0.0244 |
+| Toys | R@10 | - | - | 0.07 | 0.0711 | - | - | 0.0712 | - | **0.0970** | 0.0939 | 0.0778 | 0.0765 |
+| | N@10 | - | - | 0.0376 | 0.037 | - | - | 0.0432 | - | **0.0580** | 0.0538 | 0.0450 | 0.0437 |
+
+
 - **Movielens datasets**
 
 During our experiments, we found that HSTU and FuXi-𝛼 repositories provided MovieLens datasets processing code, which differed from the typical practice for these datasets because of not preserving the original
@@ -36,23 +51,8 @@ items’ interactions order for a user in case of timestamp collisions. This res
 | ML-20M  | 8 layers   | R@10      | -          | **0.3567** | 0.353  | 0.0465    | 0.3457         | 0.3464       | 0.3468     |
 |         |            | N@10      | -          | 0.2106     | 0.2086 | 0.0231    | **0.2107**     | 0.2040       | 0.2043     |
 
-- **Amazon datasets**
 
-| Dataset | Metric | Reported | | | | | | | | Calculated | | | |
-|---------|--------|----------|-|-|-|-|-|-|-|-----|-|-|-|
-| | | SASRec | HSTU | S3Rec | LSAN | DuoRec | CL4SRec | TIGER | ActionPiece | SASRec+SS | eSASRec | HSTU | Fuxi-α |
-| Beauty | R@10 | 0.0605 | 0.0704 | 0.0647 | 0.0785 | 0.0845 | 0.0681 | 0.0648 | 0.0775 | 0.0921 | **0.0928** | 0.0788 | 0.0809 |
-| | N@10 | 0.0318 | 0.0389 | 0.0327 | 0.041 | 0.0443 | 0.0299 | 0.0384 | 0.0424 | **0.0531** | 0.0523 | 0.0439 | 0.0451 |
-| Sports | R@10 | 0.0350 | 0.0414 | 0.0385 | 0.0481 | 0.0498 | 0.0387 | 0.04 | 0.05 | **0.0569** | 0.0560 | 0.0437 | 0.0437 |
-| | N@10 | 0.0192 | 0.0215 | 0.0204 | 0.0264 | 0.0262 | 0.0171 | 0.0225 | 0.0264 | 0.0314 | **0.0323** | 0.0243 | 0.0244 |
-| Toys | R@10 | - | - | 0.07 | 0.0711 | - | - | 0.0712 | - | **0.0970** | 0.0939 | 0.0778 | 0.0765 |
-| | N@10 | - | - | 0.0376 | 0.037 | - | - | 0.0432 | - | **0.0580** | 0.0538 | 0.0450 | 0.0437 |
-
-**Beauty dataset illustrated:**
-
-![academic](assets/loo.svg)
-
-### Hyperparameters for all datasets
+# Hyperparameters for all datasets
 
 We tuned hyperparamaters from the following grid:
 - emb_dim (n_factors): [50, 64, 128, 256]
@@ -66,7 +66,7 @@ We tuned hyperparamaters from the following grid:
 We used constant learning_rate 0.001 for all datasets.
 We selected max number of epochs (100 or 200) and patience (10 or 50) depeding on dataset size and convergence speed.
 
-Selected hyperparamters are equal for both realistic benchmark in our paper and other common academic benchmarks:
+Selected hyperparamters are equal for main realistic benchmark in our paper and other common academic benchmarks:
 
 | Hyperparameter          | ML-1M | ML-20M | Beauty | Sports | Toys  | Kion  | BeerAdvocate |
 |-------------------------|-------|--------|--------|--------|-------|-------|--------------|
@@ -213,7 +213,7 @@ Following ["A Systematic Review and Replicability Study of BERT4Rec for Sequenti
 |         | SASRec SS      | 0.2862   | 0.2931 | +2.41    |[Link](https://arxiv.org/abs/2306.04039)|
 
 
-### Extended metrics from realistic benchmark
+### Extended metrics for the main realistic benchmark
 Here the time-based validation approach is used where data is split by global timestamp and the most recent interactions are used for testing. Both accuracy, and beyond-accuracy metrics are taken into account.
 
 - **ML-20M dataset**
@@ -277,8 +277,13 @@ Here the time-based validation approach is used where data is split by global ti
 | | BERT4Rec+LiGR+SS | 0.2777 | 0.0561 | 0.0353 | 0.1102 | 0.0188 |
 | **Mixing** | DenseAA-30-days+LiGR+gBCE-0.75 | 0.2798 | 0.0576 | 0.0283 | 0.1109 | 0.0179 |
 
-Negative sampling results:
+### The Pareto-front on Kion dataset
+![pareto](assets/pareto_front.svg)
+
+### Mixed Negative sampling experiments with in-batch ratio and presence of LogQ correction:
 ![negatives](assets/neg_bars.svg)
+
+
 
 ### Dataset summary statistics
 | Dataset | Users | Items | Interactions | Avg. Len. | Dataset name in repository | 
